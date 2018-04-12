@@ -1,6 +1,6 @@
 package particleSwarm;
 
-public class Particle {
+public class Particle implements Cloneable {
 	public double[] structure;
 	public double[] velocity;
 	
