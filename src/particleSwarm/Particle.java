@@ -1,6 +1,6 @@
 package particleSwarm;
 
-public class Particle implements Cloneable {
+public class Particle {
 	public double[] structure;
 	public double[] velocity;
 	
@@ -62,7 +62,7 @@ public class Particle implements Cloneable {
 	{
 		return 1/4000 * summation() - product();
 	}
-	
+
 	public Particle()
 	{
 		structure = new double[Parameters.structureLength];

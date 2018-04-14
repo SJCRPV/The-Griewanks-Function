@@ -4,9 +4,15 @@ public class Swarm implements Cloneable {
 	
 	public Particle[] particles;
 	
-	public Object clone() throws CloneNotSupportedException
+	public Swarm clone()
 	{  
-		return super.clone();  	
+		Swarm retSwarm = new Swarm();
+		for(int i = 0; i < Parameters.swarmSize; i++)
+		{
+			retSwarm.particles[i] = particles[i].clone();
+		}
+		
+		return retSwarm;
 	}  
 	
 	public Particle getBestParticle()
