@@ -1,5 +1,7 @@
 package particleSwarm;
 
+import main.Parameters;
+
 public class Swarm implements Cloneable {
 	
 	public Particle[] particles;

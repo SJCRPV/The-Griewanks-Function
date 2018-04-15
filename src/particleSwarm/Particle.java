@@ -1,5 +1,7 @@
 package particleSwarm;
 
+import main.Parameters;
+
 public class Particle {
 	public double[] structure;
 	public double[] velocity;
