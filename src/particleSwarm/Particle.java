@@ -15,6 +15,11 @@ public class Particle {
 		System.out.println(calculateFitness());
 	}
 	
+	private double generateRandomNumber()
+	{
+		return Math.random() * (Math.abs(Parameters.MAX) + Math.abs(Parameters.MIN)) - Math.abs(Parameters.MIN);
+	}
+	
 	public boolean better(Particle other)
 	{
 		if (Parameters.maximisation)
@@ -41,11 +46,11 @@ public class Particle {
 	
 	private double product()
 	{
-		double prod = structure[0];
+		double prod = Math.cos(structure[0]/Math.sqrt(1));
 		
 		for(int i = 1; i < structure.length; i++)
 		{
-			prod *= Math.cos(structure[i]/Math.sqrt(structure[i])) + 1;
+			prod *= Math.cos(structure[i]/Math.sqrt(i + 1));
 		}
 		return prod;
 	}
@@ -62,7 +67,7 @@ public class Particle {
 	
 	public double calculateFitness()
 	{
-		return 1/4000 * summation() - product();
+		return 1/4000 * summation() - product() + 1;
 	}
 
 	public Particle()
@@ -72,8 +77,8 @@ public class Particle {
 		
 		for(int i = 0; i < structure.length; i++)
 		{
-			structure[i] = Math.random() * (Math.abs(Parameters.MAX) + Math.abs(Parameters.MIN)) - Math.abs(Parameters.MIN);
-			velocity[i] = 0.0f;
+			structure[i] = generateRandomNumber();
+			velocity[i] = 0.0;
 		}
 	}
 }

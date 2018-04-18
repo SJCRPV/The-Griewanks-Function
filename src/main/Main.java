@@ -148,7 +148,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		
 		engageTheSwarm();
-		engageTheGenetics();
+		//engageTheGenetics();
 	}
 
 }

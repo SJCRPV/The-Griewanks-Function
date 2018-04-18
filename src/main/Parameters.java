@@ -6,6 +6,7 @@ public class Parameters {
 	//Common
 	public static final int MAX = 600;
 	public static final int MIN = -600;
+	public static int maxNumOfGenerations = 100;
 	public static boolean maximisation = false;
 	public static int structureLength = 10;
 	
@@ -17,9 +18,8 @@ public class Parameters {
 	
 	//Swarm
 	public static int swarmSize = 10;
-	public static int maxNumOfGenerations = 100;
-	public static double localMultiplier = 10;
-	public static double globalMultiplier = 10;
+	public static double localMultiplier = 0.2;
+	public static double globalMultiplier = 0.4;
 	public static double inertia = 0.5;
 	
 }

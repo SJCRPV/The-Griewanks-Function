@@ -11,9 +11,9 @@ public class Citizen {
 	{
 		for(int i = 0; i < structure.length; i++)
 		{
-			System.out.print(structure[i]);
+			System.out.print(structure[i] + "\t");
 		}
-		System.out.println("\t" + calculateFitness());
+		System.out.println(calculateFitness());
 	}
 	
 	public void setGene(int index, double value)
@@ -71,11 +71,11 @@ public class Citizen {
 	
 	private double product()
 	{
-		double prod = structure[0];
+		double prod = Math.cos(structure[0]/Math.sqrt(1));
 		
 		for(int i = 1; i < structure.length; i++)
 		{
-			prod *= Math.cos(structure[i]/Math.sqrt(structure[i])) + 1;
+			prod *= Math.cos(structure[i]/Math.sqrt(i + 1));
 		}
 		return prod;
 	}
@@ -94,7 +94,7 @@ public class Citizen {
 	{
 		if(!fitnessAlreadyCalculated)
 		{
-			fitness = 1/4000 * summation() - product();
+			fitness = 1/4000 * summation() - product() + 1;
 			fitnessAlreadyCalculated = true;
 		}
 		return fitness;
@@ -108,7 +108,6 @@ public class Citizen {
 		for(int i = 0; i < structure.length; i++)
 		{
 			structure[i] = generateRandomNumber();
-			System.out.println(structure[i]);
 		}
 	}
 }
