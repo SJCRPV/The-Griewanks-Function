@@ -8,11 +8,11 @@ public class Particle {
 	
 	public void print()
 	{
-		for(int i = 0; i < structure.length; i++)
-		{
-			System.out.print(structure[i] + "\t");
-		}
-		System.out.println(calculateFitness());
+//		for(int i = 0; i < structure.length; i++)
+//		{
+//			System.out.print(structure[i] + "\t");
+//		}
+//		System.out.println(calculateFitness());
 	}
 	
 	private double generateRandomNumber()

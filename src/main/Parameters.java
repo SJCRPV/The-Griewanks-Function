@@ -18,8 +18,8 @@ public class Parameters {
 	
 	//Swarm
 	public static int swarmSize = 10;
-	public static double localMultiplier = 0.2;
-	public static double globalMultiplier = 0.4;
+	public static double localInertia = 0.2;
+	public static double globalIntertia = 0.4;
 	public static double inertia = 0.5;
 	
 }

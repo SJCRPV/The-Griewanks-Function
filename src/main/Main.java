@@ -10,8 +10,6 @@ public class Main {
 	static Particle bestOne = swarm.getBestParticle();
 	
 	//Genetic
-	
-	
 	public static Citizen[] crossover(Citizen father, Citizen mother)
 	{
 		Citizen[] offspring = new Citizen[2];
@@ -117,15 +115,16 @@ public class Main {
 		{				
 			for(int bit = 0; bit < Parameters.structureLength; bit++)
 			{
+				double distanceFromLocalBest = localBestSwarm.particles[partIndex].structure[bit] - swarm.particles[partIndex].structure[bit];
+				double localDifference = Parameters.localInertia * distanceFromLocalBest;
+				
+				double distanceFromBestOne = bestOne.structure[bit] - swarm.particles[partIndex].structure[bit];
+				double globalDifference = Parameters.globalIntertia * distanceFromBestOne;
+				
+				swarm.particles[partIndex].velocity[bit] *= Parameters.inertia + localDifference + globalDifference;
+				System.out.println(swarm.particles[partIndex].velocity[bit]);
+				
 				swarm.particles[partIndex].structure[bit] += swarm.particles[partIndex].velocity[bit];
-				
-				double differenceFromLocalBest = localBestSwarm.particles[partIndex].structure[bit] - swarm.particles[partIndex].structure[bit];
-				double localDifference = Parameters.localMultiplier * Math.random() * differenceFromLocalBest;
-				
-				double differenceFromBestOne = bestOne.structure[bit] - swarm.particles[partIndex].structure[bit];
-				double globalDifference = Parameters.globalMultiplier * Math.random() * differenceFromBestOne;
-				
-				swarm.particles[partIndex].structure[bit] *= Parameters.inertia + localDifference + globalDifference;
 			}
 			
 			checkForHierarchyChanges(partIndex);
@@ -139,9 +138,8 @@ public class Main {
 			moveTheSwarm();
 			
 			System.out.println(gen + ", "); 
-			bestOne.print();
+//			bestOne.print();
 		}
-		
 	}
 	
 	public static void main(String[] args) {
