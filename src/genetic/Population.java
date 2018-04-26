@@ -9,7 +9,7 @@ public class Population {
 	{
 		Citizen best = citizens[0].cloneIndividual();
 		
-		for(int i = 0; i < Parameters.populationSize; i++)
+		for(int i = 0; i < Parameters.groupSize; i++)
 		{
 			if(citizens[i].better(best))
 			{
@@ -27,7 +27,7 @@ public class Population {
 	
 	private Citizen getRandomCitizen()
 	{
-		return citizens[(int)(Math.random() * Parameters.populationSize)];
+		return citizens[(int)(Math.random() * Parameters.groupSize)];
 	}
 	
 	public Citizen getCitizen(int i)
@@ -59,7 +59,7 @@ public class Population {
 	
 	public Population()
 	{
-		citizens = new Citizen[Parameters.populationSize];
+		citizens = new Citizen[Parameters.groupSize];
 		for(int i = 0; i < citizens.length; i++)
 		{
 			citizens[i] = new Citizen();

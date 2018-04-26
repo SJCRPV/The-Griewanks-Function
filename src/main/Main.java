@@ -47,7 +47,7 @@ public class Main {
 		for(int generation = 0; generation <= Parameters.maxNumOfGenerations; generation++)
 		{
 			newPop = new Population();
-			for(int i = 0; i < Parameters.populationSize; i++)
+			for(int i = 0; i < Parameters.groupSize; i++)
 			{
 				pop.getCitizen(i).calculateFitness();
 			}
@@ -56,7 +56,7 @@ public class Main {
 			
 			int newPopIndivsCount = 1;
 			
-			while (newPopIndivsCount < Parameters.populationSize)
+			while (newPopIndivsCount < Parameters.groupSize)
 			{
 				Citizen father = pop.select();
 				Citizen mother = pop.select();
@@ -76,13 +76,13 @@ public class Main {
 				offspring[0].mutate();
 				offspring[1].mutate();
 				
-				if(newPopIndivsCount < Parameters.populationSize)
+				if(newPopIndivsCount < Parameters.groupSize)
 				{
 					newPop.setCitizen(newPopIndivsCount, offspring[0]);
 					newPopIndivsCount++;
 				}
 				
-				if (newPopIndivsCount < Parameters.populationSize)
+				if (newPopIndivsCount < Parameters.groupSize)
 				{
 					newPop.setCitizen(newPopIndivsCount,  offspring[1]);
 					newPopIndivsCount++;
@@ -111,18 +111,17 @@ public class Main {
 	
 	private static void moveTheSwarm()
 	{
-		for(int partIndex = 0; partIndex < Parameters.swarmSize; partIndex++)
+		for(int partIndex = 0; partIndex < Parameters.groupSize; partIndex++)
 		{				
 			for(int bit = 0; bit < Parameters.structureLength; bit++)
 			{
 				double distanceFromLocalBest = localBestSwarm.particles[partIndex].structure[bit] - swarm.particles[partIndex].structure[bit];
-				double localDifference = Parameters.localInertia * distanceFromLocalBest;
+				double localDifference = Parameters.localInertia * Math.random() * distanceFromLocalBest;
 				
 				double distanceFromBestOne = bestOne.structure[bit] - swarm.particles[partIndex].structure[bit];
-				double globalDifference = Parameters.globalIntertia * distanceFromBestOne;
+				double globalDifference = Parameters.globalIntertia * Math.random() * distanceFromBestOne;
 				
-				swarm.particles[partIndex].velocity[bit] *= Parameters.inertia + localDifference + globalDifference;
-				System.out.println(swarm.particles[partIndex].velocity[bit]);
+				swarm.particles[partIndex].velocity[bit] = swarm.particles[partIndex].velocity[bit] * Parameters.innateInertia + localDifference + globalDifference;
 				
 				swarm.particles[partIndex].structure[bit] += swarm.particles[partIndex].velocity[bit];
 			}
@@ -138,7 +137,7 @@ public class Main {
 			moveTheSwarm();
 			
 			System.out.println(gen + ", "); 
-//			bestOne.print();
+			bestOne.print();
 		}
 	}
 	

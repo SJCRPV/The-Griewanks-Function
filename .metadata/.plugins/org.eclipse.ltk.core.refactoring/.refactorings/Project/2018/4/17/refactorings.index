@@ -1,0 +1,4 @@
+1524740401398	Rename field 'localMultiplier'
+1524740416881	Rename field 'globalMultiplier'
+1524741703552	Rename local variable 'differenceFromLocalBest'
+1524741721549	Rename local variable 'differenceFromBestOne'

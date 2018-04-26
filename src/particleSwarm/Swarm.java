@@ -9,7 +9,7 @@ public class Swarm implements Cloneable {
 	public Swarm clone()
 	{  
 		Swarm retSwarm = new Swarm();
-		for(int i = 0; i < Parameters.swarmSize; i++)
+		for(int i = 0; i < Parameters.groupSize; i++)
 		{
 			retSwarm.particles[i] = particles[i].clone();
 		}
@@ -21,7 +21,7 @@ public class Swarm implements Cloneable {
 	{
 		Particle best = particles[0];
 		
-		for(int i = 0; i < Parameters.swarmSize; i++)
+		for(int i = 0; i < Parameters.groupSize; i++)
 		{
 			if(particles[i].better(best))
 			{
@@ -34,8 +34,8 @@ public class Swarm implements Cloneable {
 		
 	public Swarm()
 	{
-		particles = new Particle[Parameters.swarmSize];
-		for(int i = 0; i < Parameters.swarmSize; i++)
+		particles = new Particle[Parameters.groupSize];
+		for(int i = 0; i < Parameters.groupSize; i++)
 		{
 			particles[i] = new Particle();
 		}

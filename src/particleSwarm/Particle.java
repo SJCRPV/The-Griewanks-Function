@@ -12,7 +12,7 @@ public class Particle {
 //		{
 //			System.out.print(structure[i] + "\t");
 //		}
-//		System.out.println(calculateFitness());
+		System.out.println(calculateFitness());
 	}
 	
 	private double generateRandomNumber()
