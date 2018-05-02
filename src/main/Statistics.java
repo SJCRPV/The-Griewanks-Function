@@ -10,6 +10,52 @@ public class Statistics {
 	private static double[] averageBestFitnessSwarm;
 	private static double[] averageBestFitnessGenetic;
 	
+	public static void printABFList()
+	{
+		if(wantSwarm)
+		{
+			for(int i = 0; i < averageBestFitnessSwarm.length; i++)
+			{
+				System.out.println("Swarm Gen " + i + ": " + averageBestFitnessSwarm[i]);
+			}
+		}
+		else
+		{
+			for(int i = 0; i < averageBestFitnessGenetic.length; i++)
+			{
+				System.out.println("Genetic Gen " + i + ": " + averageBestFitnessGenetic[i]);
+			}
+		}
+	}
+	
+	public static void printList()
+	{
+		if(wantSwarm)
+		{
+			for(int i = 0; i < swarmBestFitness.size(); i++)
+			{
+				System.out.println("Swarm Gen: " + i);
+				for(int j = 0; j < swarmBestFitness.get(i).size(); j++)
+				{
+					System.out.print(swarmBestFitness.get(i).get(j) + "\t");
+				}
+				System.out.println();
+			}
+		}
+		else
+		{
+			for(int i = 0; i < geneticBestFitness.size(); i++)
+			{
+				System.out.println("Genetic Gen: " + i);
+				for(int j = 0; j < geneticBestFitness.get(i).size(); j++)
+				{
+					System.out.print(geneticBestFitness.get(i).get(j) + "\t");
+				}
+				System.out.println();
+			}
+		}
+	}
+	
 	public static double[] getAverageBestFitnessList()
 	{
 		if(wantSwarm)
@@ -90,42 +136,28 @@ public class Statistics {
 			}
 		}
 	}
-	public double variance(){
-		double variancia=0;
-		if(wantSwarm) {
-		  double sum=0;
-			for(int i=0;i<averageBestFitnessSwarm.length;i++) {
-			sum+=averageBestFitnessSwarm[i];
+	public double variance()
+	{
+		double variation = 0;
+		if(wantSwarm)
+		{
+			for(int i = 0; i < averageBestFitnessSwarm.length; i++)
+			{
+				variation = Math.pow(variation + averageBestFitnessSwarm[i], 2);
 			}
-			double mean=sum/averageBestFitnessSwarm.length;
-			double sum1=0;
-			for(int i=0;i<averageBestFitnessSwarm.length;i++) {
-				double difference= (averageBestFitnessSwarm[i] - mean);
-				sum1+=Math.pow(difference,2);
-			}
-			double v= sum1/averageBestFitnessSwarm.length;
-	       variancia= Math.sqrt(v);
-	      }
+			variation = Math.sqrt(variation/averageBestFitnessSwarm.length);
+		}
 		else
 		{
-			 double sum=0;
-				for(int i=0;i<averageBestFitnessGenetic.length;i++) {
-				sum+=averageBestFitnessGenetic[i];
-				}
-				double mean=sum/averageBestFitnessGenetic.length;
-				double sum1=0;
-				for(int i=0;i<averageBestFitnessSwarm.length;i++) {
-					double difference= (averageBestFitnessGenetic[i] - mean);
-					sum1+=Math.pow(difference,2);
-				}
-				double v= sum1/averageBestFitnessGenetic.length;
-		        variancia=Math.sqrt(v);
+			for(int i = 0; i < averageBestFitnessGenetic.length; i++)
+			{
+				variation = Math.pow(variation + averageBestFitnessGenetic[i], 2);
+			}
+			variation = Math.sqrt(variation/averageBestFitnessGenetic.length);
 		}
-			
-			return variancia;
-			
-		}
+		return variation;			
 	}
+}
 	
 	
 	
