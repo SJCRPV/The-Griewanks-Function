@@ -4,6 +4,8 @@ import particleSwarm.*;
 
 public class Main {
 
+	static int runsToMake=30;
+	
 	// Swarm
 	static Swarm swarm = new Swarm();
 	static Swarm localBestSwarm = swarm.clone();
@@ -38,6 +40,8 @@ public class Main {
 	
 	public static void engageTheGenetics()
 	{
+		Statistics.setWantSwarm(false);
+		Statistics.addColumnToList();
 		Population pop = new Population();
 		System.out.print("0. ");
 		pop.getBestCitizen().print();
@@ -91,6 +95,7 @@ public class Main {
 			
 			System.out.print(generation + ". ");
 			newPop.getBestCitizen().print();
+			Statistics.addToList(Statistics.getListColumnCount(), newPop.getBestCitizen().calculateFitness());
 			
 			pop = newPop;
 		}
@@ -130,22 +135,27 @@ public class Main {
 		}
 	}
 	
-	private static void engageTheSwarm()
+	private  static void engageTheSwarm()
 	{	
+		Statistics.setWantSwarm(true);
+		Statistics.addColumnToList();
 		for (int gen = 0; gen < Parameters.maxNumOfGenerations; gen++)
 		{
 			moveTheSwarm();
 			
 			System.out.println(gen + ", "); 
 			bestOne.print();
+			Statistics.addToList(Statistics.getListColumnCount(), bestOne.calculateFitness());
 		}
 	}
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
-		engageTheSwarm();
-		//engageTheGenetics();
+		for(int i = 0; i < runsToMake; i++)
+		{
+			engageTheSwarm();
+			//engageTheGenetics();
+		}			
 	}
 
 }
