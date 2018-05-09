@@ -7,7 +7,7 @@ public class Parameters {
 	public static final int MAX = 600;
 	public static final int MIN = -600;
 	public static int maxNumOfGenerations = 100;
-	public static boolean maximisation = false;
+	public static final boolean maximisation = false;
 	public static int structureLength = 10;
 	public static int groupSize = 10;
 	

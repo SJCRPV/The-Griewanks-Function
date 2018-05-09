@@ -95,7 +95,7 @@ public class Main {
 			
 			System.out.print(generation + ". ");
 			newPop.getBestCitizen().print();
-			Statistics.addToList(Statistics.getListColumnCount(), newPop.getBestCitizen().calculateFitness());
+			Statistics.addToList(Statistics.getListColumnCount() - 1, newPop.getBestCitizen().calculateFitness());
 			
 			pop = newPop;
 		}
@@ -145,7 +145,7 @@ public class Main {
 			
 			System.out.println(gen + ", "); 
 			bestOne.print();
-			Statistics.addToList(Statistics.getListColumnCount(), bestOne.calculateFitness());
+			Statistics.addToList(Statistics.getListColumnCount() - 1, bestOne.calculateFitness());
 		}
 	}
 	

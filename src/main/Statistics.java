@@ -1,14 +1,13 @@
 package main;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Statistics {
 	private static boolean wantSwarm = false;
 	private static ArrayList<ArrayList<Double>> swarmBestFitness = new ArrayList<ArrayList<Double>>();
 	private static ArrayList<ArrayList<Double>> geneticBestFitness = new ArrayList<ArrayList<Double>>();
-	private static double[] averageBestFitnessSwarm;
-	private static double[] averageBestFitnessGenetic;
+	private static double[] averageBestFitnessSwarm = new double[Parameters.maxNumOfGenerations];
+	private static double[] averageBestFitnessGenetic = new double[Parameters.maxNumOfGenerations];
 	
 	public static void printABFList()
 	{
@@ -34,7 +33,7 @@ public class Statistics {
 		{
 			for(int i = 0; i < swarmBestFitness.size(); i++)
 			{
-				System.out.println("Swarm Gen: " + i);
+				System.out.println("Swarm Run: " + i);
 				for(int j = 0; j < swarmBestFitness.get(i).size(); j++)
 				{
 					System.out.print(swarmBestFitness.get(i).get(j) + "\t");
@@ -46,7 +45,7 @@ public class Statistics {
 		{
 			for(int i = 0; i < geneticBestFitness.size(); i++)
 			{
-				System.out.println("Genetic Gen: " + i);
+				System.out.println("Genetic Run: " + i);
 				for(int j = 0; j < geneticBestFitness.get(i).size(); j++)
 				{
 					System.out.print(geneticBestFitness.get(i).get(j) + "\t");
