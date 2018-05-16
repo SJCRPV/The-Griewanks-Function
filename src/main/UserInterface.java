@@ -12,10 +12,12 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 
-public class UserInterface 
+public class UserInterface extends JFrame
 {
+	private static final long serialVersionUID = -8977032405731085889L;
 	private JTextField maxNumOfGenerations;
 	private JTextField groupSize;
 	private JTextField structureLength;
@@ -28,10 +30,11 @@ public class UserInterface
 	
 	private ArrayList<JTextField> textFields;
 	private ArrayList<String> textFieldsDefaultVals;
-	private JTextField textField;
+	private JTextField numberOfRuns;
 	
 	private void setParameters()
 	{
+		Parameters.numberOfRuns = Integer.parseInt(numberOfRuns.getText());
 		Parameters.maxNumOfGenerations = Integer.parseInt(maxNumOfGenerations.getText());
 		Parameters.groupSize = Integer.parseInt(groupSize.getText());
 		Parameters.structureLength = Integer.parseInt(structureLength.getText());
@@ -43,9 +46,35 @@ public class UserInterface
 		Parameters.globalIntertia = Double.parseDouble(globalInertia.getText());
 	}
 	
+	private boolean areThereNoInputErrors()
+	{
+		boolean foundInputError = false;
+		if(Integer.parseInt(mutationRate.getText()) < 0 || Integer.parseInt(mutationRate.getText()) > 1)
+		{
+			foundInputError = true;
+		}
+		if(Integer.parseInt(crossoverRate.getText()) < 0 || Integer.parseInt(crossoverRate.getText()) > 1)
+		{
+			foundInputError = true;
+		}
+		if(Integer.parseInt(tournamentSize.getText()) > Integer.parseInt(groupSize.getText()))
+		{
+			foundInputError = true;
+		}
+		if(Integer.parseInt(numberOfRuns.getText()) < 30)
+		{
+			foundInputError = true;
+		}
+		return foundInputError;
+	}
+	
 	private void runAlgorithms()
 	{
-		setParameters();
+		if(areThereNoInputErrors())
+		{
+			setParameters();
+			Main.engageTheAlgorithms();
+		}
 	}
 	
 	private void resetValues()
@@ -172,7 +201,7 @@ public class UserInterface
 	  
 	  crossoverRate = new JTextField();
 	  crossoverRate.setToolTipText("The probability of a crossover between two objects existing (between 0 and 1)");
-	  crossoverRate.setText("10");
+	  crossoverRate.setText("0.9");
 	  crossoverRate.setHorizontalAlignment(SwingConstants.CENTER);
 	  crossoverRate.setColumns(10);
 	  crossoverRate.setBounds(340, 75, 100, 20);
@@ -185,6 +214,10 @@ public class UserInterface
 	  lblCrossoverRate.setHorizontalAlignment(SwingConstants.CENTER);
 	  lblCrossoverRate.setBounds(340, 50, 100, 14);
 	  Genetic.add(lblCrossoverRate);
+	  
+	  JSeparator separator_1 = new JSeparator();
+	  separator_1.setBounds(0, 0, 484, 2);
+	  Genetic.add(separator_1);
 	  
 	  JPanel Swarm = new JPanel();
 	  Swarm.setBackground(Color.WHITE);
@@ -245,6 +278,10 @@ public class UserInterface
 	  lblInnateInertia.setBounds(340, 50, 100, 14);
 	  Swarm.add(lblInnateInertia);
 	  
+	  JSeparator separator = new JSeparator();
+	  separator.setBounds(0, 0, 484, 2);
+	  Swarm.add(separator);
+	  
 	  JPanel Execution = new JPanel();
 	  Execution.setBackground(Color.WHITE);
 	  Execution.setBounds(0, 360, 484, 100);
@@ -265,22 +302,28 @@ public class UserInterface
 			  });
 	  
 	  JButton btnReturnToDefaults = new JButton("Return to Defaults");
-	  btnReturnToDefaults.setBounds(344, 66, 130, 23);
+	  btnReturnToDefaults.setBounds(339, 66, 140, 23);
 	  Execution.add(btnReturnToDefaults);
 	  btnReturnToDefaults.setToolTipText("Return all values to their defaults");
 	  
-	  textField = new JTextField();
-	  textField.setToolTipText("How many times will the algorithms run?");
-	  textField.setHorizontalAlignment(SwingConstants.CENTER);
-	  textField.setText("30");
-	  textField.setBounds(185, 30, 100, 20);
-	  Execution.add(textField);
-	  textField.setColumns(10);
+	  numberOfRuns = new JTextField();
+	  numberOfRuns.setToolTipText("How many times will the algorithms run?");
+	  numberOfRuns.setHorizontalAlignment(SwingConstants.CENTER);
+	  numberOfRuns.setText("30");
+	  numberOfRuns.setBounds(185, 30, 100, 20);
+	  Execution.add(numberOfRuns);
+	  textFields.add(numberOfRuns);
+	  textFieldsDefaultVals.add(numberOfRuns.getText());
+	  numberOfRuns.setColumns(10);
 	  
 	  JLabel lblNumberOfRuns = new JLabel("Number of runs");
 	  lblNumberOfRuns.setHorizontalAlignment(SwingConstants.CENTER);
 	  lblNumberOfRuns.setBounds(185, 11, 100, 14);
 	  Execution.add(lblNumberOfRuns);
+	  
+	  JSeparator separator_2 = new JSeparator();
+	  separator_2.setBounds(0, 0, 484, 2);
+	  Execution.add(separator_2);
 	  f.setVisible(true);
 	  btnReturnToDefaults.addActionListener(
 			  new ActionListener()

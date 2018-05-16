@@ -1,10 +1,13 @@
 package main;
+import javax.swing.JFrame;
+
 import genetic.*;
 import particleSwarm.*;
 
 public class Main {
 
-	static int runsToMake=30;
+	static UserInterface userInterface;
+	static JFrame frame;
 	
 	// Swarm
 	static Swarm swarm = new Swarm();
@@ -48,7 +51,7 @@ public class Main {
 		
 		Population newPop;
 		
-		for(int generation = 0; generation <= Parameters.maxNumOfGenerations; generation++)
+		for(int gen = 0; gen < Parameters.maxNumOfGenerations; gen++)
 		{
 			newPop = new Population();
 			for(int i = 0; i < Parameters.groupSize; i++)
@@ -93,7 +96,7 @@ public class Main {
 				}
 			}
 			
-			System.out.print(generation + ". ");
+			System.out.print("Genetic gen " + gen + ". ");
 			newPop.getBestCitizen().print();
 			Statistics.addToList(Statistics.getListColumnCount() - 1, newPop.getBestCitizen().calculateFitness());
 			
@@ -135,7 +138,7 @@ public class Main {
 		}
 	}
 	
-	private  static void engageTheSwarm()
+	private static void engageTheSwarm()
 	{	
 		Statistics.setWantSwarm(true);
 		Statistics.addColumnToList();
@@ -143,19 +146,24 @@ public class Main {
 		{
 			moveTheSwarm();
 			
-			System.out.println(gen + ", "); 
+			System.out.println("Swarm gen " + gen + ", "); 
 			bestOne.print();
 			Statistics.addToList(Statistics.getListColumnCount() - 1, bestOne.calculateFitness());
 		}
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		for(int i = 0; i < runsToMake; i++)
+	public static void engageTheAlgorithms()
+	{
+		for(int i = 0; i < Parameters.numberOfRuns; i++)
 		{
 			engageTheSwarm();
-			//engageTheGenetics();
-		}			
+			engageTheGenetics();
+		}	
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		userInterface = new UserInterface();		
 	}
 
 }

@@ -27,6 +27,20 @@ public class Statistics {
 		}
 	}
 	
+	public static Object[][] convertListToTableData()
+	{
+		Object[][] returnData = new Object[swarmBestFitness.size()][];
+		if(wantSwarm)
+		{
+			for(int i = 0; i < swarmBestFitness.size(); i++)
+			{
+				//TODO format it in an array of objects formatted like what the table needs 
+			}
+		}
+		
+		return returnData;
+	}
+	
 	public static void printList()
 	{
 		if(wantSwarm)

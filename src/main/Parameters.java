@@ -4,6 +4,7 @@ package main;
 public class Parameters {
 	
 	//Common
+	public static int numberOfRuns = 30;
 	public static final int MAX = 600;
 	public static final int MIN = -600;
 	public static int maxNumOfGenerations = 100;
