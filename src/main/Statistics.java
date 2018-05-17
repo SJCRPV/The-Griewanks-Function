@@ -27,18 +27,31 @@ public class Statistics {
 		}
 	}
 	
-	public static Object[][] convertListToTableData()
+	public static Object[][][] convertListToTableData()
 	{
-		Object[][] returnData = new Object[swarmBestFitness.size()][];
-		if(wantSwarm)
+		Object[][][] returnData = new Object[swarmBestFitness.size()][][];
+		for(int run = 0; run < swarmBestFitness.size(); run++)
 		{
-			for(int i = 0; i < swarmBestFitness.size(); i++)
+			returnData[run] = new Object[swarmBestFitness.get(run).size()][];
+			for(int gen = 0; gen < swarmBestFitness.get(run).size(); gen++)
 			{
-				//TODO format it in an array of objects formatted like what the table needs 
+				returnData[run][gen] = new Object[] { };
 			}
 		}
 		
 		return returnData;
+//		
+//		Object[][] returnData = new Object[swarmBestFitness.size()][];
+//		if(wantSwarm)
+//		{
+//			for(int i = 0; i < swarmBestFitness.size(); i++)
+//			{
+//				//TODO format it in an array of objects formatted like what the table needs 
+//				returnData[i] = new Object[] { i, swarmBestFitness.get(i),  };
+//			}
+//		}
+//		
+//		return returnData;
 	}
 	
 	public static void printList()
