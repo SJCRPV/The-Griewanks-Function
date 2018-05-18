@@ -121,13 +121,11 @@ public class Statistics {
 		
 		if(wantSwarm)
 		{
-			tableData = swarmTableData;
 			bestFitness = swarmBestFitness;
 			averageBestFitness = averageBestFitnessSwarm;
 		}
 		else
 		{
-			tableData = geneticTableData;
 			bestFitness = geneticBestFitness;
 			averageBestFitness = averageBestFitnessGenetic;
 		}
@@ -141,6 +139,15 @@ public class Statistics {
 //													{ "Generation", "Best Fitness", "Average Best Fitness" };
 				tableData[run][gen] = new Object[] { gen, bestFitness.get(run).get(gen), averageBestFitness[gen] };
 			}
+		}
+		
+		if(wantSwarm)
+		{
+			swarmTableData = tableData;
+		}
+		else
+		{
+			geneticTableData = tableData;
 		}
 	}
 	

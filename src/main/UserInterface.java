@@ -99,6 +99,10 @@ public class UserInterface extends JFrame
 		{
 			setParameters();
 			Main.engageTheAlgorithms();
+			Statistics.setWantSwarm(true);
+			Statistics.calcBestAverageFitness();
+			Statistics.convertListToTableData();
+			Statistics.setWantSwarm(false);
 			Statistics.calcBestAverageFitness();
 			Statistics.convertListToTableData();
 			showResultsPanel();
