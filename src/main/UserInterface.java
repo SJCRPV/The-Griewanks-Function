@@ -17,6 +17,11 @@ import javax.swing.JSeparator;
 
 public class UserInterface extends JFrame
 {
+	JFrame f = new JFrame("A JFrame");
+	JPanel Common = new JPanel();
+	JPanel Genetic = new JPanel();
+	JPanel Swarm = new JPanel();
+	JPanel Execution = new JPanel();
 	private static final long serialVersionUID = -8977032405731085889L;
 	private JTextField maxNumOfGenerations;
 	private JTextField groupSize;
@@ -48,24 +53,44 @@ public class UserInterface extends JFrame
 	
 	private boolean areThereNoInputErrors()
 	{
-		boolean foundInputError = false;
-		if(Integer.parseInt(mutationRate.getText()) < 0 || Integer.parseInt(mutationRate.getText()) > 1)
+		boolean foundInputError = true;
+		if(Double.parseDouble(mutationRate.getText()) < 0 || Double.parseDouble(mutationRate.getText()) > 1)
 		{
-			foundInputError = true;
+			System.out.println("Mutation Rate is wrong");
+			foundInputError = false;
 		}
-		if(Integer.parseInt(crossoverRate.getText()) < 0 || Integer.parseInt(crossoverRate.getText()) > 1)
+		if(Double.parseDouble(crossoverRate.getText()) < 0 || Double.parseDouble(crossoverRate.getText()) > 1)
 		{
-			foundInputError = true;
+			System.out.println("Crossover Rate is wrong");
+			foundInputError = false;
 		}
 		if(Integer.parseInt(tournamentSize.getText()) > Integer.parseInt(groupSize.getText()))
 		{
-			foundInputError = true;
+			System.out.println("Tournament Size is bigger than the group size");
+			foundInputError = false;
 		}
 		if(Integer.parseInt(numberOfRuns.getText()) < 30)
 		{
-			foundInputError = true;
+			System.out.println("You're trying to run less than 30 instances. This won't give you statistically relevant data");
+			foundInputError = false;
 		}
+		System.out.println("Done!");
 		return foundInputError;
+	}
+	
+	private void showResultsPanel()
+	{
+		System.out.println("Results!");
+		JPanel resultsPage = new ResultsPage();
+		resultsPage.setBackground(Color.WHITE);
+		resultsPage.setBounds(0, 0, 484, 460);
+		f.getContentPane().add(resultsPage);
+		resultsPage.setLayout(null);
+		resultsPage.setVisible(true);
+		Common.setVisible(false);
+		Genetic.setVisible(false);
+		Swarm.setVisible(false);
+		Execution.setVisible(false);
 	}
 	
 	private void runAlgorithms()
@@ -74,6 +99,9 @@ public class UserInterface extends JFrame
 		{
 			setParameters();
 			Main.engageTheAlgorithms();
+			Statistics.calcBestAverageFitness();
+			Statistics.convertListToTableData();
+			showResultsPanel();
 		}
 	}
 	
@@ -90,14 +118,12 @@ public class UserInterface extends JFrame
 	  textFields = new ArrayList<JTextField>();
 	  textFieldsDefaultVals = new ArrayList<String>();
 	  
-	  JFrame f = new JFrame("A JFrame");
 	  f.getContentPane().setEnabled(false);
 	  f.getContentPane().setBackground(Color.LIGHT_GRAY);
 	  f.setSize(500, 500);
 	  f.setLocation(300,300);
 	  f.getContentPane().setLayout(null);
 	  
-	  JPanel Common = new JPanel();
 	  Common.setBackground(Color.WHITE);
 	  Common.setBounds(0, 0, 484, 120);
 	  f.getContentPane().add(Common);
@@ -156,7 +182,6 @@ public class UserInterface extends JFrame
 	  Common.add(lblStructureLength);
 	  lblStructureLength.setHorizontalAlignment(SwingConstants.CENTER);
 	  
-	  JPanel Genetic = new JPanel();
 	  Genetic.setBackground(Color.WHITE);
 	  Genetic.setBounds(0, 120, 484, 120);
 	  f.getContentPane().add(Genetic);
@@ -219,7 +244,6 @@ public class UserInterface extends JFrame
 	  separator_1.setBounds(0, 0, 484, 2);
 	  Genetic.add(separator_1);
 	  
-	  JPanel Swarm = new JPanel();
 	  Swarm.setBackground(Color.WHITE);
 	  Swarm.setLayout(null);
 	  Swarm.setBounds(0, 240, 484, 120);
@@ -282,7 +306,6 @@ public class UserInterface extends JFrame
 	  separator.setBounds(0, 0, 484, 2);
 	  Swarm.add(separator);
 	  
-	  JPanel Execution = new JPanel();
 	  Execution.setBackground(Color.WHITE);
 	  Execution.setBounds(0, 360, 484, 100);
 	  f.getContentPane().add(Execution);

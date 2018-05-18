@@ -8,78 +8,63 @@ public class Statistics {
 	private static ArrayList<ArrayList<Double>> geneticBestFitness = new ArrayList<ArrayList<Double>>();
 	private static double[] averageBestFitnessSwarm = new double[Parameters.maxNumOfGenerations];
 	private static double[] averageBestFitnessGenetic = new double[Parameters.maxNumOfGenerations];
+	private static Object[][][] swarmTableData;
+	private static Object[][][] geneticTableData;
 	
 	public static void printABFList()
 	{
+		double[] averageBestFitness;
+		
 		if(wantSwarm)
 		{
-			for(int i = 0; i < averageBestFitnessSwarm.length; i++)
-			{
-				System.out.println("Swarm Gen " + i + ": " + averageBestFitnessSwarm[i]);
-			}
+			System.out.println("Swarm Generations -------------");
+			averageBestFitness = averageBestFitnessSwarm;
 		}
 		else
 		{
-			for(int i = 0; i < averageBestFitnessGenetic.length; i++)
-			{
-				System.out.println("Genetic Gen " + i + ": " + averageBestFitnessGenetic[i]);
-			}
-		}
-	}
-	
-	public static Object[][][] convertListToTableData()
-	{
-		Object[][][] returnData = new Object[swarmBestFitness.size()][][];
-		for(int run = 0; run < swarmBestFitness.size(); run++)
-		{
-			returnData[run] = new Object[swarmBestFitness.get(run).size()][];
-			for(int gen = 0; gen < swarmBestFitness.get(run).size(); gen++)
-			{
-				returnData[run][gen] = new Object[] { };
-			}
+			System.out.println("Genetic Generations -------------");
+			averageBestFitness = averageBestFitnessGenetic;
 		}
 		
-		return returnData;
-//		
-//		Object[][] returnData = new Object[swarmBestFitness.size()][];
-//		if(wantSwarm)
-//		{
-//			for(int i = 0; i < swarmBestFitness.size(); i++)
-//			{
-//				//TODO format it in an array of objects formatted like what the table needs 
-//				returnData[i] = new Object[] { i, swarmBestFitness.get(i),  };
-//			}
-//		}
-//		
-//		return returnData;
+		for(int i = 0; i < averageBestFitness.length; i++)
+		{
+			System.out.println("Gen " + i + ": " + averageBestFitness[i]);
+		}
 	}
 	
 	public static void printList()
 	{
+		ArrayList<ArrayList<Double>> bestFitness;
+		
 		if(wantSwarm)
 		{
-			for(int i = 0; i < swarmBestFitness.size(); i++)
-			{
-				System.out.println("Swarm Run: " + i);
-				for(int j = 0; j < swarmBestFitness.get(i).size(); j++)
-				{
-					System.out.print(swarmBestFitness.get(i).get(j) + "\t");
-				}
-				System.out.println();
-			}
+			System.out.println("Swarm ------------ ");
+			bestFitness = swarmBestFitness;
 		}
 		else
 		{
-			for(int i = 0; i < geneticBestFitness.size(); i++)
-			{
-				System.out.println("Genetic Run: " + i);
-				for(int j = 0; j < geneticBestFitness.get(i).size(); j++)
-				{
-					System.out.print(geneticBestFitness.get(i).get(j) + "\t");
-				}
-				System.out.println();
-			}
+			System.out.println("Genetic ------------- ");
+			bestFitness = geneticBestFitness;
 		}
+		
+		for(int i = 0; i < bestFitness.size(); i++)
+		{
+			System.out.println("Run: " + i);
+			for(int j = 0; j < bestFitness.get(i).size(); j++)
+			{
+				System.out.print(bestFitness.get(i).get(j) + "\t");
+			}
+			System.out.println();
+		}
+	}
+	
+	public static Object[][][] getTableData()
+	{
+		if(wantSwarm)
+		{
+			return swarmTableData;			
+		}
+		return geneticTableData;
 	}
 	
 	public static double[] getAverageBestFitnessList()
@@ -89,6 +74,14 @@ public class Statistics {
 			return averageBestFitnessSwarm;
 		}
 		return averageBestFitnessGenetic;
+	}
+	
+	public static int getListColumnCount()
+	{
+		if(wantSwarm) {
+			return swarmBestFitness.size();
+		}
+		return geneticBestFitness.size();
 	}
 	
 	public static void setWantSwarm(boolean value)
@@ -119,32 +112,58 @@ public class Statistics {
 			geneticBestFitness.add(new ArrayList<Double>());
 		}
 	}
-	public static int getListColumnCount()
+	
+	public static void convertListToTableData()
 	{
-		if(wantSwarm) {
-			return swarmBestFitness.size();
+		Object[][][] tableData;
+		ArrayList<ArrayList<Double>> bestFitness;
+		double[] averageBestFitness;
+		
+		if(wantSwarm)
+		{
+			tableData = swarmTableData;
+			bestFitness = swarmBestFitness;
+			averageBestFitness = averageBestFitnessSwarm;
 		}
-		return geneticBestFitness.size();
+		else
+		{
+			tableData = geneticTableData;
+			bestFitness = geneticBestFitness;
+			averageBestFitness = averageBestFitnessGenetic;
+		}
+		
+		tableData = new Object[bestFitness.size()][][];
+		for(int run = 0; run < bestFitness.size(); run++)
+		{
+			tableData[run] = new Object[bestFitness.get(run).size()][];
+			for(int gen = 0; gen < bestFitness.get(run).size(); gen++)
+			{
+//													{ "Generation", "Best Fitness", "Average Best Fitness" };
+				tableData[run][gen] = new Object[] { gen, bestFitness.get(run).get(gen), averageBestFitness[gen] };
+			}
+		}
 	}
 	
 	private static double calcGenerationAverage(int gen) 
 	{
 		double genAverage = 0;
-		if(wantSwarm) 
+		ArrayList<ArrayList<Double>> bestFitness;
+		
+		if(wantSwarm)
 		{
-			for(int i=0; i < swarmBestFitness.size(); i++)
-			{
-				genAverage += swarmBestFitness.get(i).get(gen);
-			}
-			genAverage = genAverage/swarmBestFitness.size();
+			bestFitness = swarmBestFitness;
 		}
-		else {
-			for(int i=0; i < geneticBestFitness.size(); i++)
-			{
-				genAverage += geneticBestFitness.get(i).get(gen);
-			}
-			genAverage = genAverage/ geneticBestFitness.size();
+		else
+		{
+			bestFitness = geneticBestFitness;
 		}
+		
+		for(int i=0; i < bestFitness.size(); i++)
+		{
+			genAverage += bestFitness.get(i).get(gen);
+		}
+		genAverage = genAverage/bestFitness.size();
+		
 		return genAverage;
 	}
 	
@@ -162,33 +181,27 @@ public class Statistics {
 			}
 		}
 	}
-	public double variance()
+	
+	public static double calcVariance()
 	{
 		double variation = 0;
+		double[] averageBestFitness;
+		
 		if(wantSwarm)
 		{
-			for(int i = 0; i < averageBestFitnessSwarm.length; i++)
-			{
-				variation = Math.pow(variation + averageBestFitnessSwarm[i], 2);
-			}
-			variation = Math.sqrt(variation/averageBestFitnessSwarm.length);
+			averageBestFitness = averageBestFitnessSwarm;
 		}
 		else
 		{
-			for(int i = 0; i < averageBestFitnessGenetic.length; i++)
-			{
-				variation = Math.pow(variation + averageBestFitnessGenetic[i], 2);
-			}
-			variation = Math.sqrt(variation/averageBestFitnessGenetic.length);
+			averageBestFitness = averageBestFitnessGenetic;
 		}
+		
+		for(int i = 0; i < averageBestFitness.length; i++)
+		{ 
+			variation = Math.pow(variation + averageBestFitness[i], 2);
+		}
+		variation = Math.sqrt(variation/averageBestFitness.length);
+		
 		return variation;			
 	}
 }
-	
-	
-	
-	
-	
-	
-
-
