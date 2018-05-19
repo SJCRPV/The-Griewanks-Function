@@ -98,13 +98,13 @@ public class UserInterface extends JFrame
 		if(areThereNoInputErrors())
 		{
 			setParameters();
-			Main.engageTheAlgorithms();
-			Statistics.setWantSwarm(true);
-			Statistics.calcBestAverageFitness();
-			Statistics.convertListToTableData();
-			Statistics.setWantSwarm(false);
-			Statistics.calcBestAverageFitness();
-			Statistics.convertListToTableData();
+//			Main.engageTheAlgorithms();
+//			Statistics.setWantSwarm(true);
+//			Statistics.calcBestAverageFitness();
+//			Statistics.convertListToTableData();
+//			Statistics.setWantSwarm(false);
+//			Statistics.calcBestAverageFitness();
+//			Statistics.convertListToTableData();
 			showResultsPanel();
 		}
 	}
