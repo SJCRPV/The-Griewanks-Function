@@ -83,7 +83,7 @@ public class UserInterface extends JFrame
 		System.out.println("Results!");
 		JPanel resultsPage = new ResultsPage();
 		resultsPage.setBackground(Color.WHITE);
-		resultsPage.setBounds(0, 0, 484, 460);
+		resultsPage.setBounds(0, 0, 500, 500);
 		f.getContentPane().add(resultsPage);
 		resultsPage.setLayout(null);
 		resultsPage.setVisible(true);
@@ -98,13 +98,13 @@ public class UserInterface extends JFrame
 		if(areThereNoInputErrors())
 		{
 			setParameters();
-//			Main.engageTheAlgorithms();
-//			Statistics.setWantSwarm(true);
-//			Statistics.calcBestAverageFitness();
-//			Statistics.convertListToTableData();
-//			Statistics.setWantSwarm(false);
-//			Statistics.calcBestAverageFitness();
-//			Statistics.convertListToTableData();
+			Main.engageTheAlgorithms();
+			Statistics.setWantSwarm(true);
+			Statistics.calcBestAverageFitness();
+			Statistics.convertListToTableData();
+			Statistics.setWantSwarm(false);
+			Statistics.calcBestAverageFitness();
+			Statistics.convertListToTableData();
 			showResultsPanel();
 		}
 	}
