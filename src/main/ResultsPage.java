@@ -5,6 +5,16 @@ import javax.swing.JTable;
 import javax.swing.JScrollPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JTabbedPane;
 import javax.swing.JComboBox;
@@ -32,6 +42,51 @@ public class ResultsPage extends JPanel
 	private Object[][][] fullGeneticData;
 	private Object[][] swarmData;
 	private Object[][] geneticData;
+
+	private JFreeChart createChart(XYDataset dataset)
+	{
+		JFreeChart chart = ChartFactory.createXYLineChart("Algorithm Comparison", "Generation", "Fitness", dataset);
+		
+		XYPlot plot = chart.getXYPlot();
+		
+		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
+		renderer.setSeriesPaint(0, Color.BLUE);
+		renderer.setSeriesPaint(1, Color.RED);
+		
+		plot.setRenderer(renderer);
+		plot.setBackgroundPaint(Color.WHITE);
+		
+		plot.setRangeGridlinesVisible(true);
+        plot.setRangeGridlinePaint(Color.BLACK);
+
+        plot.setDomainGridlinesVisible(true);
+        plot.setDomainGridlinePaint(Color.PINK);
+        
+        chart.setTitle("Algorithm Comparison");
+
+        return chart;
+	}
+	
+	private XYDataset createDataset() 
+	{
+		int comboBoxValue = (int) comboBox.getSelectedItem();
+		XYSeries swarmSeries = new XYSeries("Swarm Fitness");
+		XYSeries geneticSeries = new XYSeries("Genetic Fitness");
+		for(int i = 0; i < swarmData[comboBoxValue].length && i < geneticData[comboBoxValue].length; i++)
+		{
+			Double swarmGenFitness = Double.parseDouble(swarmData[comboBoxValue][i].toString());
+			Double geneticGenFitness = Double.parseDouble(geneticData[comboBoxValue][i].toString());
+			
+			swarmSeries.add(i, swarmGenFitness);
+			geneticSeries.add(i, geneticGenFitness);
+		}
+		
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(swarmSeries);
+		dataset.addSeries(geneticSeries);
+		
+		return dataset;
+	}
 	
 	private void updateTable()
 	{
@@ -118,8 +173,11 @@ public class ResultsPage extends JPanel
 		lblRun.setBounds(10, 5, 30, 14);
 		add(lblRun);
 		
-		JPanel Graph = new JPanel();
+		XYDataset dataset = createDataset();
+        JFreeChart chart = createChart(dataset);
+		ChartPanel Graph = new ChartPanel(chart);
 		Graph.setBounds(0, 220, 500, 280);
 		add(Graph);
+		// Just look here http://zetcode.com/java/jfreechart/
 	}
 }
