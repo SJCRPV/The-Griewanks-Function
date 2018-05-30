@@ -9,6 +9,8 @@ import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
@@ -37,6 +39,7 @@ public class ResultsPage extends JPanel
 	private JTabbedPane tabbedPane;
 	private JScrollPane swarmPane;
 	private JScrollPane geneticPane;
+	private ChartPanel Graph;
 	private JComboBox<?> comboBox;
 	private Object[][][] fullSwarmData;
 	private Object[][][] fullGeneticData;
@@ -48,6 +51,12 @@ public class ResultsPage extends JPanel
 		JFreeChart chart = ChartFactory.createXYLineChart("Algorithm Comparison", "Generation", "Fitness", dataset);
 		
 		XYPlot plot = chart.getXYPlot();
+		NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
+		NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+		xAxis.setRange(1, Parameters.maxNumOfGenerations);
+		xAxis.setTickUnit(new NumberTickUnit(Parameters.maxNumOfGenerations/10));
+		yAxis.setRange(0, 1);
+		yAxis.setTickUnit(new NumberTickUnit(0.1));
 		
 		XYLineAndShapeRenderer renderer = new XYLineAndShapeRenderer();
 		renderer.setSeriesPaint(0, Color.BLUE);
@@ -69,16 +78,15 @@ public class ResultsPage extends JPanel
 	
 	private XYDataset createDataset() 
 	{
-		int comboBoxValue = (int) comboBox.getSelectedItem();
 		XYSeries swarmSeries = new XYSeries("Swarm Fitness");
 		XYSeries geneticSeries = new XYSeries("Genetic Fitness");
-		for(int i = 0; i < swarmData[comboBoxValue].length && i < geneticData[comboBoxValue].length; i++)
+		for(int i = 0; i < swarmData.length && i < geneticData.length; i++)
 		{
-			Double swarmGenFitness = Double.parseDouble(swarmData[comboBoxValue][i].toString());
-			Double geneticGenFitness = Double.parseDouble(geneticData[comboBoxValue][i].toString());
+			Double swarmGenFitness = Double.parseDouble(swarmData[i][1].toString());
+			Double geneticGenFitness = Double.parseDouble(geneticData[i][1].toString());
 			
-			swarmSeries.add(i, swarmGenFitness);
-			geneticSeries.add(i, geneticGenFitness);
+			swarmSeries.add(i + 1, swarmGenFitness);
+			geneticSeries.add(i + 1, geneticGenFitness);
 		}
 		
 		XYSeriesCollection dataset = new XYSeriesCollection();
@@ -88,21 +96,44 @@ public class ResultsPage extends JPanel
 		return dataset;
 	}
 	
+	private void updateGraph()
+	{
+		remove(Graph);
+		XYDataset dataset = createDataset();
+        JFreeChart chart = createChart(dataset);
+		Graph = new ChartPanel(chart);
+		add(Graph);
+		Graph.repaint();
+	}
+	
 	private void updateTable()
 	{
 		int selectedTab = tabbedPane.getSelectedIndex();
 		int comboBoxValue = (int) comboBox.getSelectedItem();
-		//Swarm
+		if(comboBoxValue <= 1)
+		{
+			comboBoxValue = 1;
+			comboBox.setSelectedItem(1);
+		}
+		if(comboBoxValue >= Parameters.numberOfRuns)
+		{
+			comboBoxValue = Parameters.numberOfRuns;
+			comboBox.setSelectedItem(Parameters.numberOfRuns);
+		}
+		
+		// If Swarm is selected
 		if(selectedTab == 0)
 		{
-			swarmData = fullSwarmData[comboBoxValue];
+			swarmData = fullSwarmData[comboBoxValue - 1];
 			SwarmResultTable = new JTable(swarmData, columns);
 			swarmPane.setViewportView(SwarmResultTable);
+			swarmPane.repaint();
 			return;
 		}
-		geneticData = fullGeneticData[comboBoxValue];
+		geneticData = fullGeneticData[comboBoxValue - 1];
 		GeneticResultTable = new JTable(geneticData, columns);
 		geneticPane.setViewportView(GeneticResultTable);
+		geneticPane.repaint();
 	}
 	
 	public ResultsPage() 
@@ -164,6 +195,7 @@ public class ResultsPage extends JPanel
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						updateTable();
+						updateGraph();
 					}
 				});
 		
@@ -175,7 +207,7 @@ public class ResultsPage extends JPanel
 		
 		XYDataset dataset = createDataset();
         JFreeChart chart = createChart(dataset);
-		ChartPanel Graph = new ChartPanel(chart);
+		Graph = new ChartPanel(chart);
 		Graph.setBounds(0, 220, 500, 280);
 		add(Graph);
 		// Just look here http://zetcode.com/java/jfreechart/
