@@ -39,18 +39,21 @@ public class ResultsPage extends JPanel
 	private JTabbedPane tabbedPane;
 	private JScrollPane swarmPane;
 	private JScrollPane geneticPane;
-	private ChartPanel Graph;
 	private JComboBox<?> comboBox;
+	private ChartPanel PerRunGraph;
+	private XYDataset dataset;
+	private XYSeriesCollection seriesCollection;
+	private JFreeChart chart;
 	private Object[][][] fullSwarmData;
 	private Object[][][] fullGeneticData;
 	private Object[][] swarmData;
 	private Object[][] geneticData;
+	private ChartPanel AverageGraph;
 
-	private JFreeChart createChart(XYDataset dataset)
+	private void setGraphOptions(JFreeChart chartToChange)
 	{
-		JFreeChart chart = ChartFactory.createXYLineChart("Algorithm Comparison", "Generation", "Fitness", dataset);
 		
-		XYPlot plot = chart.getXYPlot();
+		XYPlot plot = chartToChange.getXYPlot();
 		NumberAxis xAxis = (NumberAxis) plot.getDomainAxis();
 		NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
 		xAxis.setRange(1, Parameters.maxNumOfGenerations);
@@ -71,45 +74,73 @@ public class ResultsPage extends JPanel
         plot.setDomainGridlinesVisible(true);
         plot.setDomainGridlinePaint(Color.PINK);
         
-        chart.setTitle("Algorithm Comparison");
-
-        return chart;
 	}
 	
-	private XYDataset createDataset() 
+	private XYDataset createDataset(boolean wantAverage) 
 	{
-		XYSeries swarmSeries = new XYSeries("Swarm Fitness");
-		XYSeries geneticSeries = new XYSeries("Genetic Fitness");
+		XYSeries swarmSeries;
+		XYSeries geneticSeries;
+		int fitnessTypeIndex = wantAverage ? 2 : 1;
+		if(seriesCollection == null || seriesCollection.getSeriesCount() == 0)
+		{
+			swarmSeries = new XYSeries("Swarm Fitness");
+			geneticSeries = new XYSeries("Genetic Fitness");
+		}
+		else
+		{
+			swarmSeries = seriesCollection.getSeries("Swarm Fitness");
+			geneticSeries = seriesCollection.getSeries("Genetic Fitness");
+			seriesCollection.removeSeries(swarmSeries);
+			seriesCollection.removeSeries(geneticSeries);
+			swarmSeries.clear();
+			geneticSeries.clear();
+		}
+		
 		for(int i = 0; i < swarmData.length && i < geneticData.length; i++)
 		{
-			Double swarmGenFitness = Double.parseDouble(swarmData[i][1].toString());
-			Double geneticGenFitness = Double.parseDouble(geneticData[i][1].toString());
+			Double swarmGenFitness = Double.parseDouble(swarmData[i][fitnessTypeIndex].toString());
+			Double geneticGenFitness = Double.parseDouble(geneticData[i][fitnessTypeIndex].toString());
 			
 			swarmSeries.add(i + 1, swarmGenFitness);
 			geneticSeries.add(i + 1, geneticGenFitness);
 		}
 		
-		XYSeriesCollection dataset = new XYSeriesCollection();
-		dataset.addSeries(swarmSeries);
-		dataset.addSeries(geneticSeries);
+		seriesCollection.addSeries(swarmSeries);
+		seriesCollection.addSeries(geneticSeries);
 		
-		return dataset;
+		return seriesCollection;
 	}
 	
 	private void updateGraph()
 	{
-		remove(Graph);
-		XYDataset dataset = createDataset();
-        JFreeChart chart = createChart(dataset);
-		Graph = new ChartPanel(chart);
-		add(Graph);
-		Graph.repaint();
+		dataset = createDataset(false);
+		chart = ChartFactory.createXYLineChart("Algorithm Comparison", "Generation", "Fitness", dataset);
+		PerRunGraph = new ChartPanel(chart);
+		PerRunGraph.repaint();
+	}
+	
+	private void createGraph(String graphTitle, boolean wantAverage)
+	{
+		seriesCollection = new XYSeriesCollection();
+		dataset = createDataset(wantAverage);
+		chart = ChartFactory.createXYLineChart(graphTitle, "Generation", "Fitness", dataset);
+        setGraphOptions(chart);
 	}
 	
 	private void updateTable()
 	{
+		int comboBoxValue;			
 		int selectedTab = tabbedPane.getSelectedIndex();
-		int comboBoxValue = (int) comboBox.getSelectedItem();
+
+		try
+		{
+			comboBoxValue = (int) comboBox.getSelectedItem();
+		}
+		catch(ClassCastException e)
+		{
+			return;
+		}
+		
 		if(comboBoxValue <= 1)
 		{
 			comboBoxValue = 1;
@@ -121,17 +152,18 @@ public class ResultsPage extends JPanel
 			comboBox.setSelectedItem(Parameters.numberOfRuns);
 		}
 		
+		swarmData = fullSwarmData[comboBoxValue - 1];
+		SwarmResultTable = new JTable(swarmData, columns);
+		geneticData = fullGeneticData[comboBoxValue - 1];
+		GeneticResultTable = new JTable(geneticData, columns);
+
 		// If Swarm is selected
 		if(selectedTab == 0)
 		{
-			swarmData = fullSwarmData[comboBoxValue - 1];
-			SwarmResultTable = new JTable(swarmData, columns);
 			swarmPane.setViewportView(SwarmResultTable);
 			swarmPane.repaint();
 			return;
 		}
-		geneticData = fullGeneticData[comboBoxValue - 1];
-		GeneticResultTable = new JTable(geneticData, columns);
 		geneticPane.setViewportView(GeneticResultTable);
 		geneticPane.repaint();
 	}
@@ -167,7 +199,7 @@ public class ResultsPage extends JPanel
 		setLayout(null);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, 20, 490, 200);
+		tabbedPane.setBounds(0, 20, 500, 200);
 		add(tabbedPane);
 		
 		swarmPane = new JScrollPane();
@@ -205,11 +237,14 @@ public class ResultsPage extends JPanel
 		lblRun.setBounds(10, 5, 30, 14);
 		add(lblRun);
 		
-		XYDataset dataset = createDataset();
-        JFreeChart chart = createChart(dataset);
-		Graph = new ChartPanel(chart);
-		Graph.setBounds(0, 220, 500, 280);
-		add(Graph);
-		// Just look here http://zetcode.com/java/jfreechart/
+		createGraph("ABF Algorithm Comparison", true);
+		AverageGraph = new ChartPanel(chart);
+		AverageGraph.setBounds(0, 500, 500, 280);
+		add(AverageGraph);
+		
+		createGraph("Algorithm Comparison", false);
+		PerRunGraph = new ChartPanel(chart);
+		PerRunGraph.setBounds(0, 220, 500, 280);
+		add(PerRunGraph);
 	}
 }

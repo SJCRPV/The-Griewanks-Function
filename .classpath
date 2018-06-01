@@ -2,9 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JCommon"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JFreeChart"/>
-	<classpathentry exported="true" kind="lib" path="H:/AI/Project/The-Griewanks-Function/lib/jfreechart-1.0.19.jar"/>
-	<classpathentry exported="true" kind="lib" path="H:/AI/Project/The-Griewanks-Function/lib/jcommon-1.0.23.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SJCRPV/Documents/GitHub/The-Griewanks-Function/lib/jfreechart-1.0.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/SJCRPV/Documents/GitHub/The-Griewanks-Function/lib/jcommon-1.0.23.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

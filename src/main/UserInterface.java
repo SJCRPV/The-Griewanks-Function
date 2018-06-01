@@ -83,7 +83,8 @@ public class UserInterface extends JFrame
 		System.out.println("Results!");
 		JPanel resultsPage = new ResultsPage();
 		resultsPage.setBackground(Color.WHITE);
-		resultsPage.setBounds(0, 0, 500, 500);
+		resultsPage.setBounds(0, 0, 520, 790);
+		f.setSize(520, 790);
 		f.getContentPane().add(resultsPage);
 		resultsPage.setLayout(null);
 		resultsPage.setVisible(true);
@@ -124,9 +125,11 @@ public class UserInterface extends JFrame
 	  
 	  f.getContentPane().setEnabled(false);
 	  f.getContentPane().setBackground(Color.LIGHT_GRAY);
-	  f.setSize(500, 500);
+	  f.setTitle("The Griewank Function");
+	  f.setSize(505, 500);
 	  f.setLocation(300,300);
 	  f.getContentPane().setLayout(null);
+	  f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  
 	  Common.setBackground(Color.WHITE);
 	  Common.setBounds(0, 0, 484, 120);

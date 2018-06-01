@@ -138,10 +138,17 @@ public class Main {
 		}
 	}
 	
+	private static void initialiseTheSwarm()
+	{
+		swarm = new Swarm();
+		bestOne = swarm.getBestParticle();
+	}
+	
 	private static void engageTheSwarm()
 	{	
 		Statistics.setWantSwarm(true);
 		Statistics.addColumnToList();
+		initialiseTheSwarm();
 		for (int gen = 0; gen < Parameters.maxNumOfGenerations; gen++)
 		{
 			moveTheSwarm();
@@ -150,6 +157,9 @@ public class Main {
 			bestOne.print();
 			Statistics.addToList(Statistics.getListColumnCount() - 1, bestOne.calculateFitness());
 		}
+		
+		//
+		
 	}
 	
 	public static void engageTheAlgorithms()
