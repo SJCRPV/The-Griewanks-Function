@@ -58,6 +58,11 @@ public class Statistics {
 		}
 	}
 	
+	public static Object[][] getVarianceData()
+	{
+		return null;
+	}
+	
 	public static Object[][][] getTableData()
 	{
 		if(wantSwarm)
@@ -136,6 +141,7 @@ public class Statistics {
 			tableData[run] = new Object[bestFitness.get(run).size()][];
 			for(int gen = 0; gen < bestFitness.get(run).size(); gen++)
 			{
+				// NOTE: You don't have to keep adding the ABF on the third slot every time. It's a waste of space, but there's not enough time and there's no noticeable impact, so screw it 
 //													{ "Generation", "Best Fitness", "Average Best Fitness" };
 				tableData[run][gen] = new Object[] { gen, bestFitness.get(run).get(gen), averageBestFitness[gen] };
 			}

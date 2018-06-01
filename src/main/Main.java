@@ -10,9 +10,9 @@ public class Main {
 	static JFrame frame;
 	
 	// Swarm
-	static Swarm swarm = new Swarm();
-	static Swarm localBestSwarm = swarm.clone();
-	static Particle bestOne = swarm.getBestParticle();
+	static Swarm swarm;
+	static Swarm localBestSwarm;
+	static Particle bestOne;
 	
 	//Genetic
 	public static Citizen[] crossover(Citizen father, Citizen mother)
@@ -46,8 +46,6 @@ public class Main {
 		Statistics.setWantSwarm(false);
 		Statistics.addColumnToList();
 		Population pop = new Population();
-		System.out.print("0. ");
-		pop.getBestCitizen().print();
 		
 		Population newPop;
 		
@@ -96,8 +94,6 @@ public class Main {
 				}
 			}
 			
-			System.out.print("Genetic gen " + gen + ". ");
-			newPop.getBestCitizen().print();
 			Statistics.addToList(Statistics.getListColumnCount() - 1, newPop.getBestCitizen().calculateFitness());
 			
 			pop = newPop;
@@ -141,6 +137,7 @@ public class Main {
 	private static void initialiseTheSwarm()
 	{
 		swarm = new Swarm();
+		localBestSwarm = swarm.clone();
 		bestOne = swarm.getBestParticle();
 	}
 	
@@ -153,19 +150,19 @@ public class Main {
 		{
 			moveTheSwarm();
 			
-			System.out.println("Swarm gen " + gen + ", "); 
-			bestOne.print();
 			Statistics.addToList(Statistics.getListColumnCount() - 1, bestOne.calculateFitness());
 		}
-		
-		//
-		
 	}
 	
 	public static void engageTheAlgorithms()
 	{
+		swarm = new Swarm();
+		localBestSwarm = swarm.clone();
+		bestOne = swarm.getBestParticle();
+		
 		for(int i = 0; i < Parameters.numberOfRuns; i++)
 		{
+			System.out.println("Run: " + i);
 			engageTheSwarm();
 			engageTheGenetics();
 		}	

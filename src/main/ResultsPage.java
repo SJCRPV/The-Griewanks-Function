@@ -48,6 +48,8 @@ public class ResultsPage extends JPanel
 	private Object[][][] fullGeneticData;
 	private Object[][] swarmData;
 	private Object[][] geneticData;
+	private Object[][] swarmVariance;
+	private Object[][] geneticVariance;
 	private ChartPanel AverageGraph;
 
 	private void setGraphOptions(JFreeChart chartToChange)
@@ -188,10 +190,12 @@ public class ResultsPage extends JPanel
 		Statistics.setWantSwarm(true);
 		fullSwarmData = Statistics.getTableData();
 		swarmData = fullSwarmData[0];
+		//swarmVariance = Statistics.getVarianceData();
 		
 		Statistics.setWantSwarm(false);
 		fullGeneticData = Statistics.getTableData();
 		geneticData = fullGeneticData[0];
+		//geneticVariance = Statistics.getVarianceData();
 		
 		int numOfRows = 25;
 		DefaultTableModel tblModel = new DefaultTableModel(numOfRows, columns.length);

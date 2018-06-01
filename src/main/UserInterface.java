@@ -74,7 +74,7 @@ public class UserInterface extends JFrame
 			System.out.println("You're trying to run less than 30 instances. This won't give you statistically relevant data");
 			foundInputError = false;
 		}
-		System.out.println("Done!");
+		System.out.println("No input errors!");
 		return foundInputError;
 	}
 	
@@ -84,7 +84,7 @@ public class UserInterface extends JFrame
 		JPanel resultsPage = new ResultsPage();
 		resultsPage.setBackground(Color.WHITE);
 		resultsPage.setBounds(0, 0, 520, 790);
-		f.setSize(520, 790);
+		f.setSize(520, 820);
 		f.getContentPane().add(resultsPage);
 		resultsPage.setLayout(null);
 		resultsPage.setVisible(true);
@@ -102,9 +102,11 @@ public class UserInterface extends JFrame
 			Main.engageTheAlgorithms();
 			Statistics.setWantSwarm(true);
 			Statistics.calcBestAverageFitness();
+			Statistics.calcVariance();
 			Statistics.convertListToTableData();
 			Statistics.setWantSwarm(false);
 			Statistics.calcBestAverageFitness();
+			Statistics.calcVariance();
 			Statistics.convertListToTableData();
 			showResultsPanel();
 		}
@@ -127,7 +129,7 @@ public class UserInterface extends JFrame
 	  f.getContentPane().setBackground(Color.LIGHT_GRAY);
 	  f.setTitle("The Griewank Function");
 	  f.setSize(505, 500);
-	  f.setLocation(300,300);
+	  f.setLocation(100,100);
 	  f.getContentPane().setLayout(null);
 	  f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  
@@ -153,7 +155,7 @@ public class UserInterface extends JFrame
 	  
 	  JLabel lblNumberOfGenerations = new JLabel("Number of Generations");
 	  lblNumberOfGenerations.setLabelFor(maxNumOfGenerations);
-	  lblNumberOfGenerations.setBounds(25, 50, 111, 14);
+	  lblNumberOfGenerations.setBounds(18, 50, 131, 14);
 	  Common.add(lblNumberOfGenerations);
 	  lblNumberOfGenerations.setHorizontalAlignment(SwingConstants.CENTER);
 	  
